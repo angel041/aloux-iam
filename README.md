@@ -84,6 +84,27 @@ Cada provider es opcional. Si no se configura, el IAM funciona sin ese servicio.
 | `DEBUG` | — | Si `true`, activa `MASTER_PWD` y URL de Swagger |
 | `MASTER_PWD` | — | Contraseña maestra que omite bcrypt (requiere `DEBUG=true`) |
 | `SWAGGER_SERVER` | — | URL del servidor en Swagger cuando `DEBUG=true` |
+| `PWD_MIN_LENGTH` | `8` | Longitud mínima de contraseña |
+| `MAX_CODE_ATTEMPTS` | `5` | Intentos permitidos para el código de recuperación/OTP antes de invalidarlo |
+| `OWNER_FUNCTION` | `Propietario` | Nombre de la función con acceso total (bypassa el filtro de jerarquía) |
+| `AUTH_RATE_LIMIT` | `10` | Máximo de intentos de login por ventana en el rate limiter |
+| `AUTH_RATE_WINDOW_MIN` | `5` | Duración en minutos de la ventana del rate limiter de login |
+| `VERIFY_MAIL_EXPIRES` | `24h` | Vigencia del token de verificación de email/cuenta |
+| `VERIFY_MAIL_SESSION` | `true` | Si `false`, no exige sesión activa para confirmar el cambio de email |
+| `NODE_ENV` | — | En `production` restringe respuestas/datos de depuración expuestos por algunos endpoints |
+
+### Cookie de sesión httpOnly — **importante en producción**
+
+Modo alterno al header `Authorization`: el JWT se guarda en una cookie httpOnly en vez de devolverse en el body. Si `IAM_COOKIE_MODE` no es exactamente `"true"`, todo lo demás de esta sección se ignora y el login sigue devolviendo el token como antes.
+
+| Variable | Default | Descripción |
+|----------|---------|-------------|
+| `IAM_COOKIE_MODE` | `false` | Activa el modo cookie httpOnly. Sin esto, el resto de `IAM_COOKIE_*` no aplica |
+| `IAM_COOKIE_NAME` | `token` | Nombre de la cookie |
+| `IAM_COOKIE_DOMAIN` | — | Dominio de la cookie (necesario si front y API están en subdominios distintos) |
+| `IAM_COOKIE_DAYS` | `30` | Días de vida de la cookie |
+| `IAM_COOKIE_SAMESITE` | `none` | `SameSite` de la cookie (`none`, `lax`, `strict`) |
+| `IAM_COOKIE_SECURE` | `true` | Flag `Secure`; solo se desactiva pasando exactamente `"false"` (necesario en `none`, nunca debe quedar en `false` en producción salvo HTTP local) |
 
 ### Emails (requiere provider `email`)
 
