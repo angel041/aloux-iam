@@ -213,6 +213,16 @@ Sin `email` ni contraseña. Para comunicación machine-to-machine. Devuelve un A
 | `GET`  | `/iam/totp/setup` | Genera QR y secreto TOTP |
 | `POST` | `/iam/totp/activate` | Activa 2FA tras escanear QR |
 | `POST` | `/iam/totp/verify` | Verifica código TOTP en el login |
+| `PUT`  | `/iam/user/:USER_ID/totp` | Administrador: activa o desactiva (reinicia) el 2FA de un usuario `{ enabled }` |
+| `GET`  | `/iam/totp/me` | Usuario en sesión: si tiene 2FA activo `{ enabled, activatedAt }` |
+| `POST` | `/iam/totp/me/setup` | Usuario en sesión: genera QR y secreto (queda pendiente hasta confirmarlo) |
+| `POST` | `/iam/totp/me/enable` | Usuario en sesión: confirma con un código `{ token }` y activa el 2FA |
+| `POST` | `/iam/totp/me/disable` | Usuario en sesión: desactiva el 2FA con un código vigente `{ token }` |
+| `POST` | `/iam/totp/me/backup-codes` | Usuario en sesión: genera 10 códigos de respaldo nuevos con un código de la app `{ token }` |
+
+**Códigos de respaldo:** al activar el 2FA (`/iam/totp/me/enable` o `/iam/totp/activate`) la respuesta trae `backupCodes`: 10 códigos de un solo uso (`XXXX-XXXX`) que solo se muestran esa vez (se guarda su hash). Sirven en lugar del código de la app en `/iam/totp/verify` y `/iam/totp/me/disable`. `GET /iam/totp/me` devuelve cuántos quedan (`backupCodesLeft`).
+
+Las rutas `/iam/totp/me*` requieren sesión y su permiso dado de alta (como cualquier ruta con `middleware`). El secreto del 2FA y los tokens de sesión ya no se devuelven en `/iam/auth/me` ni en `/iam/user/:USER_ID`.
 
 ### Usuarios
 
