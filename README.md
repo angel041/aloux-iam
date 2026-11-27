@@ -194,7 +194,7 @@ Sin `email` ni contraseña. Para comunicación machine-to-machine. Devuelve un A
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
 | `GET`   | `/iam/auth/me` | Perfil del usuario autenticado |
-| `PATCH` | `/iam/auth/profile` | Actualizar perfil |
+| `PATCH` | `/iam/auth/profile` | Actualizar perfil (ignora `_functions`, `_business`, `_company`, `_client`, `status` y `data.totp`) |
 | `PUT`   | `/iam/auth/profile/pictura` | Actualizar foto de perfil |
 | `PUT`   | `/iam/auth/reset/password` | Cambiar contraseña |
 | `POST`  | `/iam/auth/send/verify/phone` | Enviar código SMS |
@@ -297,7 +297,7 @@ Las rutas `/iam/totp/me*` requieren sesión y su permiso dado de alta (como cual
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| `POST`   | `/iam/business` | Crear negocio |
+| `POST`   | `/iam/business` | Crear negocio; devuelve `{ _id, ids }` y, si quien lo crea no es Propietario, queda ligado a él (salvo que lo cree en una compañía que no es suya) |
 | `GET`    | `/iam/business` | Listar negocios |
 | `POST`   | `/iam/business/company` | Negocios de una empresa |
 | `GET`    | `/iam/business/my` | Mis negocios |
